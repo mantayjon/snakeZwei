@@ -1,39 +1,11 @@
+import Snake from './snake.js';
+
 const canvas = document.getElementById("snakeboard");
 
 console.log(canvas);
 const ctx = canvas.getContext("2d");
 
-
-class Snake {
-
-    constructor(startX, startY) {
-        this.xSnakePos = startX;
-        this.ySnakePos = startY;
-        this.tail = undefined;
-    }
-
-    updatePos(xPos, yPos) {
-        this.xSnakePos = xPos;
-        this.ySnakePos = yPos;
-    }
-
-
-    draw() {
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.xSnakePos, this.ySnakePos, rectSize, rectSize);
-    }
-
-    //function updatePositions
-    //if(tail!=) tail.updatePositions
-
-}
-
-var rectSize = canvas.width / 19;
-var xPos = canvas.width / 2 - rectSize / 2;
-var yPos = canvas.height / 2 - rectSize / 2;
-
-
-var snake = new Snake(xPos, yPos)
+var snake = new Snake(canvas.width / 2 - rectSize / 2, canvas.height / 2 - rectSize / 2)
 
 
 function checkHorizontal() {
@@ -54,27 +26,27 @@ function checkKey(e) {
 
         if (e.keyCode == '38') {
             // up arrow
-            yPos = yPos - rectSize;
+            yPos = yPos - snake.rectSize;
             checkVertical();
-            snake.updatePos(xPos, yPos);
+            snake.update(xPos, yPos);
         }
         else if (e.keyCode == '40') {
             // down arrow
-            yPos = yPos + rectSize;
+            yPos = yPos + snake.rectSize;
             checkVertical();
-            snake.updatePos(xPos, yPos);
+            snake.update(xPos, yPos);
         }
         else if (e.keyCode == '37') {
             // left arrow
-            xPos = xPos - rectSize;
+            xPos = xPos - snake.rectSize;
             checkHorizontal();
-            snake.updatePos(xPos, yPos);
+            snake.update(xPos, yPos);
         }
         else if (e.keyCode == '39') {
             // right arrow
-            xPos = xPos + rectSize;
+            xPos = xPos + snake.rectSize;
             checkHorizontal();
-            snake.updatePos(xPos, yPos);
+            snake.update(xPos, yPos);
         }
     }
 
