@@ -1,52 +1,92 @@
-import Snake from './snake.js';
+var canvas = document.getElementById("snakeboard");
 
-const canvas = document.getElementById("snakeboard");
+var ctx = canvas.getContext("2d");
 
-console.log(canvas);
-const ctx = canvas.getContext("2d");
+class Snake {
 
-var snake = new Snake(canvas.width / 2 - rectSize / 2, canvas.height / 2 - rectSize / 2)
+    constructor(startX, startY, rectSize) {
+        this.xPos = startX;
+        this.yPos = startY;
+        this.rectSize = rectSize;
+        this.direction = "right";
+        this.tail = undefined;
+    }
+
+    update(xPos, yPos) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+    }
+
+    move() {
+        switch (this.direction) {
+            case "up":
+                this.yPos -= this.rectSize;
+                this.checkVertical();
+                console.log(this.xPos,this.yPos);
+            case "down":
+                this.yPos += this.rectSize;
+                this.checkVertical();
+                console.log(this.xPos,this.yPos);
+            case "left":
+                this.xPos -= this.rectSize;
+                this.checkHorizontal();
+                console.log(this.xPos,this.yPos);
+            case "right":
+                this.xPos += this.rectSize;
+                this.checkHorizontal();
+                console.log(this.xPos,this.yPos);
+        }
+    }
+    checkHorizontal() {
+        if (this.xPos < 0) this.xPos = canvas.width - this.rectSize;
+        if (this.xPos > canvas.width - this.rectSize) this.xPos = 0;
+
+    }
+
+    checkVertical() {
+        if (this.yPos < 0) this.yPos = canvas.height - this.rectSize;
+        if (this.yPos > canvas.height - this.rectSize) this.yPos = 0;
+
+    }
 
 
-function checkHorizontal() {
-    if (xPos < 0) xPos = canvas.height - rectSize;
-    if (xPos > canvas.height - rectSize) xPos = 0;
+    draw() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.xPos, this.yPos, this.rectSize, this.rectSize);
+    }
 
 }
-function checkVertical() {
-    if (yPos < 0) yPos = canvas.height - rectSize;
-    if (yPos > canvas.width - rectSize) yPos = 0;
 
-}
+var rectSize = 40;
+
+var x = canvas.width / 2 - rectSize / 2;
+var y = canvas.height / 2 - rectSize / 2;
+
+var snake = new Snake(x, y, rectSize);
+
 
 function checkKey(e) {
 
+    e = e || window.event;
+
     if (snake != null) {
-        e = e || window.event;
+
 
         if (e.keyCode == '38') {
             // up arrow
-            yPos = yPos - snake.rectSize;
-            checkVertical();
-            snake.update(xPos, yPos);
+            snake.direction = "up";
         }
         else if (e.keyCode == '40') {
             // down arrow
-            yPos = yPos + snake.rectSize;
-            checkVertical();
-            snake.update(xPos, yPos);
+            snake.direction = "down";
         }
         else if (e.keyCode == '37') {
             // left arrow
-            xPos = xPos - snake.rectSize;
-            checkHorizontal();
-            snake.update(xPos, yPos);
+            snake.direction = "left";
         }
         else if (e.keyCode == '39') {
             // right arrow
-            xPos = xPos + snake.rectSize;
-            checkHorizontal();
-            snake.update(xPos, yPos);
+            snake.direction = "right";
         }
     }
 
@@ -59,8 +99,10 @@ window.requestAnimationFrame(render)
 
 function render() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    snake.move();
     snake.draw();
     document.onkeydown = checkKey;
     window.requestAnimationFrame(render);
+    console.log(snake.direction)
 }
 

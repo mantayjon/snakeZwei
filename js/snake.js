@@ -1,9 +1,9 @@
 export default class Snake {
 
-    constructor(startX, startY) {
+    constructor(startX, startY, rectSize) {
         this.xSnakePos = startX;
         this.ySnakePos = startY;
-        this.rectSize = canvas.width / 19;
+        this.rectSize = rectSize;
         this.tail = undefined;
     }
 
@@ -12,13 +12,9 @@ export default class Snake {
         this.ySnakePos = yPos;
     }
 
-
     draw() {
         ctx.fillStyle = "red";
-        ctx.fillRect(this.xSnakePos, this.ySnakePos, rectSize, rectSize);
+        ctx.fillRect(this.xSnakePos, this.ySnakePos, this.rectSize, this.rectSize);
     }
-
-    //function updatePositions
-    //if(tail!=) tail.updatePositions
 
 }
